@@ -1,8 +1,8 @@
-drop database if exists CaseStudy;
+drop database if exists TestCaseStudy;
 
-create database CaseStudy;
+create database TestCaseStudy;
 
-use CaseStudy;
+use TestCaseStudy;
 
 create table User(
 	Id int primary key auto_increment,
@@ -63,6 +63,3 @@ create table expense(
     userId int not null,
     foreign key (userId) references user(Id)	
 );
-
-
-
