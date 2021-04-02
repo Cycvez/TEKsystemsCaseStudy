@@ -11,6 +11,5 @@ import com.teksystems.casestudy.entity.User;
 
 @Repository
 public interface PostsDao extends JpaRepository<Posts, Integer>{
-	 List<Posts> findAllByUser(User user);
-	 List<Posts> findByDate(Date createdDate);
+
 }

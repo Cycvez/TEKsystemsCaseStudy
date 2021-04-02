@@ -1,7 +1,7 @@
 package com.teksystems.casestudy.entity;
 
-import java.util.Date;
-
+import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,128 +11,105 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
+
 @Entity 
 public class Income {
-	
-	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private int id;
+	 @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Id
+	    private int id;
 
-	@Column(nullable = false)
-    private String name;
+	    @Column
+	    private String name;
+	    
+	    @Column
+	    private String description;
+	    
+	    @Column
+	    private BigDecimal amount;
+	    
+	    @ManyToOne
+	    @JoinColumn(name= "user", nullable=false)
+	    private User user;
 
-    @Column(nullable = false)
-    private String description;
+	    public int getId() {
+	        return id;
+	    }
 
-    @Column(nullable = false)
-    private double amount;
-    
-    @Column(nullable = false)
-    private Date created;
-    
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
+	    public void setId(int id) {
+	        this.id = id;
+	    }
 
-	public int getId() {
-		return id;
-	}
+	    public String getName() {
+	        return name;
+	    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	    public void setName(String name) {
+	        this.name = name;
+	    }
 
-	public String getName() {
-		return name;
-	}
+	    public String getDescription() {
+	        return description;
+	    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	    public void setDescription(String description) {
+	        this.description = description;
+	    }
 
-	public String getDescription() {
-		return description;
-	}
+	    public BigDecimal getAmount() {
+	        return amount;
+	    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	    public void setAmount(BigDecimal amount) {
+	        this.amount = amount;
+	    }
 
-	public double getAmount() {
-		return amount;
-	}
+	    public User getUser() {
+	        return user;
+	    }
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+	    public void setUser(User user) {
+	        this.user = user;
+	    }
 
-	public Date getCreated() {
-		return created;
-	}
+	    @Override
+	    public int hashCode() {
+	        int hash = 7;
+	        hash = 59 * hash + this.id;
+	        hash = 59 * hash + Objects.hashCode(this.name);
+	        hash = 59 * hash + Objects.hashCode(this.description);
+	        hash = 59 * hash + Objects.hashCode(this.amount);
+	        hash = 59 * hash + Objects.hashCode(this.user);
+	        return hash;
+	    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Income other = (Income) obj;
-		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
-			return false;
-		if (created == null) {
-			if (other.created != null)
-				return false;
-		} else if (!created.equals(other.created))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
-		return true;
-	}
-    
+	    @Override
+	    public boolean equals(Object obj) {
+	        if (this == obj) {
+	            return true;
+	        }
+	        if (obj == null) {
+	            return false;
+	        }
+	        if (getClass() != obj.getClass()) {
+	            return false;
+	        }
+	        final Income other = (Income) obj;
+	        if (this.id != other.id) {
+	            return false;
+	        }
+	        if (!Objects.equals(this.name, other.name)) {
+	            return false;
+	        }
+	        if (!Objects.equals(this.description, other.description)) {
+	            return false;
+	        }
+	        if (!Objects.equals(this.amount, other.amount)) {
+	            return false;
+	        }
+	        if (!Objects.equals(this.user, other.user)) {
+	            return false;
+	        }
+	        return true;
+	    }
     
 }

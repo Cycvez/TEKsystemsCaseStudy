@@ -1,16 +1,21 @@
 package com.teksystems.casestudy.entity;
 
-import java.sql.Date;
+
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+
 
 @Entity 
 public class User {
@@ -20,10 +25,10 @@ public class User {
 	private int id;
 	
 	@Column(nullable = false)
-	private String f_name;
+	private String fname;
 	
 	@Column(nullable = false)
-	private String l_name;
+	private String lname;
 	
 	@Column(nullable = false)
 	private String email;
@@ -32,14 +37,15 @@ public class User {
 	private String username;
 	
 	@Column(nullable = false)
-	private String password;
+	private String phone;
 	
 	@Column(nullable = false)
-	private Date dob;
+	private String password;
+
+    @Column(nullable = false)
+    private boolean enabled;
 	
 
-	@Column(nullable = false)
-	private Date createdDate;
     
 	@OneToMany
     @JoinTable(name = "user_friend",
@@ -47,6 +53,17 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "reciever_id") })
     private List<User> friends;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = {
+                @JoinColumn(name = "id_users")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "id_role")})
+    private Set<Role> roles;
+
+    
+    
+    
 	public int getId() {
 		return id;
 	}
@@ -55,20 +72,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getF_name() {
-		return f_name;
+	public String getFname() {
+		return fname;
 	}
 
-	public void setF_name(String f_name) {
-		this.f_name = f_name;
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 
-	public String getL_name() {
-		return l_name;
+	public String getLname() {
+		return lname;
 	}
 
-	public void setL_name(String l_name) {
-		this.l_name = l_name;
+	public void setLname(String lname) {
+		this.lname = lname;
 	}
 
 	public String getEmail() {
@@ -87,6 +104,14 @@ public class User {
 		this.username = username;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -95,34 +120,43 @@ public class User {
 		this.password = password;
 	}
 
-	public Date getDob() {
-		return dob;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setDob(Date dob) {
-		this.dob = dob;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public List<User> getFriends() {
+		return friends;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
 	}
-	
-	
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
-		result = prime * result + ((dob == null) ? 0 : dob.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((f_name == null) ? 0 : f_name.hashCode());
+		result = prime * result + (enabled ? 1231 : 1237);
+		result = prime * result + ((fname == null) ? 0 : fname.hashCode());
+		result = prime * result + ((friends == null) ? 0 : friends.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((l_name == null) ? 0 : l_name.hashCode());
+		result = prime * result + ((lname == null) ? 0 : lname.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -136,37 +170,44 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (createdDate == null) {
-			if (other.createdDate != null)
-				return false;
-		} else if (!createdDate.equals(other.createdDate))
-			return false;
-		if (dob == null) {
-			if (other.dob != null)
-				return false;
-		} else if (!dob.equals(other.dob))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (f_name == null) {
-			if (other.f_name != null)
+		if (enabled != other.enabled)
+			return false;
+		if (fname == null) {
+			if (other.fname != null)
 				return false;
-		} else if (!f_name.equals(other.f_name))
+		} else if (!fname.equals(other.fname))
+			return false;
+		if (friends == null) {
+			if (other.friends != null)
+				return false;
+		} else if (!friends.equals(other.friends))
 			return false;
 		if (id != other.id)
 			return false;
-		if (l_name == null) {
-			if (other.l_name != null)
+		if (lname == null) {
+			if (other.lname != null)
 				return false;
-		} else if (!l_name.equals(other.l_name))
+		} else if (!lname.equals(other.lname))
 			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -174,6 +215,12 @@ public class User {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
-	}	
+	}
+
+
+
+
+
 	
+
 }
